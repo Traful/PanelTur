@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+//import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
 import Menu from "./components/layout/Menu";
@@ -9,12 +10,13 @@ import Atractivos from "./components/paginas/Atractivos";
 import Fest from "./components/paginas/Fest";
 
 import { Provider } from "./context";
+//<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}></Router>
 
 class App extends Component {
 	render() {
 	return (
 		<Provider>
-			<Router>
+			<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}>
 				<React.Fragment>
 					<Navbar />
 					<Menu />

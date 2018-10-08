@@ -1,7 +1,8 @@
 {
-  "name": "zzz",
+  "name": "panel-tur",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://hansjal.esy.es/panel-turismo",
   "dependencies": {
     "draft-js": "^0.10.5",
     "react": "^16.4.2",
