@@ -10,13 +10,13 @@ import Atractivos from "./components/paginas/Atractivos";
 import Fest from "./components/paginas/Fest";
 
 import { Provider } from "./context";
-//<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}></Router>
+//<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}>
 
 class App extends Component {
 	render() {
 		return (
 			<Provider>
-				<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}>
+				<Router history={Router.hashHistory}>
 					<React.Fragment>
 						<Navbar />
 						<Menu />
