@@ -115,7 +115,7 @@ class LocSelect extends Component {
         const filtro = this.state.localidades.data.map((lf) => {
             return (
                 // active
-                <button type="button" className={`list-group-item list-group-item-action${(lf === this.state.localidades.selected) ? " active" : ""}${lf.visible ? " d-block" : " d-none"}`} key={`lloc-${lf.id}`} onClick={(e) => this.handleFiltroClick(lf)}>{lf.nombre}</button>
+                <span className={`spanloc ${(lf === this.state.localidades.selected) ? "active" : ""}${lf.visible ? " d-block" : " d-none"}`} key={`lloc-${lf.id}`} onClick={(e) => this.handleFiltroClick(lf)}>{lf.nombre}</span>
             );
         });
         //const localidad_selected = this.state.localidades.selected;
@@ -142,14 +142,28 @@ class LocSelect extends Component {
                         <div className="row">
                             <div className="col">
                                 <div className="form-group">
-                                    <ul className="list-group">
+                                    <div className="d-flex justify-content-center flex-wrap">
                                         {filtro}
-                                    </ul>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 }
+                <style jsx="true">{`
+                    .spanloc {
+                        padding: 4px 8px;
+                        margin: 8px 8px;
+                        background-color: #ccc;
+                        -webkit-border-radius: 4px;
+                        border-radius: 4px;
+                        cursor: pointer;
+                    }
+                    .spanloc.active {
+                        background-color: #007bff;
+                        color: #fff;
+                    }
+                `}</style>
             </React.Fragment>
         );
     }

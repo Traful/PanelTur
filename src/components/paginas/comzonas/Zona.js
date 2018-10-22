@@ -15,6 +15,7 @@ class Zona extends Component {
                 mapa: "default.jpg",
                 activo: true
             },
+            colorSet: "000",
             ciudades: [],
             combo_ciudades: {
                 selected: 0,
@@ -38,10 +39,27 @@ class Zona extends Component {
         data.append("nombre", this.state.zona.nombre);
         data.append("descripcion", this.state.zona.descripcion);
         data.append("mapa", this.state.zona.mapa);
+        data.append("foto", this.state.zona.foto);
+        data.append("mini", this.state.zona.mini);
+        //Verificación de color hexa válido
+        let color = this.state.colorSet;
+        var isOk = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/i.test("#" + this.state.zona.color);
+        if(isOk) {
+            color = this.state.zona.color;
+        }
+        data.append("color", color);
         data.append("activo", this.state.zona.activo);
-        var mapa = document.getElementById("uploadImage-" + this.state.zona.id).files[0];
+        var mapa = document.getElementById("uploadMapa-" + this.state.zona.id).files[0];
 		if(mapa) {
 			data.append("imgmapa", mapa, mapa.name);
+        }
+        var foto = document.getElementById("uploadFoto-" + this.state.zona.id).files[0];
+		if(foto) {
+			data.append("imgfoto", foto, foto.name);
+        }
+        var mini = document.getElementById("uploadMini-" + this.state.zona.id).files[0];
+		if(mini) {
+			data.append("imgmini", mini, mini.name);
 		}
         fetch(`${process.env.REACT_APP_API_HOST}/zona/${this.state.id}`, {
             method: "POST",
@@ -56,7 +74,9 @@ class Zona extends Component {
             this.setState({
                 zona: {
                     ...this.state.zona,
-                    mapa: result.mapa
+                    mapa: result.mapa,
+                    foto: result.foto,
+                    mini: result.mini
                 },
                 MsgVisible: true
             });
@@ -69,13 +89,15 @@ class Zona extends Component {
     }
 
     handleImgChange = (event) => {
+        let tipo = event.target.id.substring(6);
+        tipo = tipo.split("-");
+        //let idx = "mapa-" + this.state.zona.id;
+        let idx = tipo[0].toLowerCase() + "-" + tipo[1];
         var reader = new FileReader();
-        let idx = "mapa-" + this.state.zona.id;
         reader.onload = function(e) {
-            let mapa = document.getElementById(idx);
-            mapa.setAttribute('src', e.target.result);
+            let imagen = document.getElementById(idx);
+            imagen.setAttribute('src', e.target.result);
         }
-        
         reader.readAsDataURL(event.target.files[0]);
     }
 
@@ -184,6 +206,9 @@ class Zona extends Component {
                     isLoaded: true,
                     zona: result.data.registros[0]
                 }, () => {
+                    this.setState({
+                        colorSet: this.state.zona.color
+                    });
                     this.findZonaCiudades(result.data.registros[0].id);
                 });
             }, (error) => { //???
@@ -233,10 +258,29 @@ class Zona extends Component {
                                     <div className="row">
                                         <div className="col-md-8">
                                             <div className="row">
-                                                <div className="col">
+                                                <div className="col-8">
                                                     <div className="form-group">
                                                         <label htmlFor="nombre">Nombre</label>
                                                         <input type="text" name="nombre" id="nombre" className="form-control" value={this.state.zona.nombre} onChange={this.handleChange} />
+                                                    </div>
+                                                </div>
+                                                <div className="col-4">
+                                                    <div className="form-group">
+                                                        <label htmlFor="color">Color {
+                                                            this.state.zona.color !== this.state.colorSet ?
+                                                            <span 
+                                                                onClick={() => this.setState({
+                                                                    zona: {
+                                                                        ...this.state.zona,
+                                                                        color: this.state.colorSet
+                                                                    }
+                                                                })}
+                                                                style={{cursor: "pointer"}}
+                                                            ><i className="fas fa-times"></i></span>
+                                                            :
+                                                            ""
+                                                        }</label>
+                                                        <input type="text" name="color" id="color" className="form-control" value={this.state.zona.color} onChange={this.handleChange} style={{backgroundColor: `#${this.state.zona.color}`, color: "#fff"}} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -246,14 +290,24 @@ class Zona extends Component {
                                                         <label htmlFor="descripcion">Descripción</label>
                                                         <textarea rows="15" name="descripcion" id="descripcion" className="form-control" value={this.state.zona.descripcion} onChange={this.handleChange} />
                                                     </div>
+                                                    <div className="form-group">
+                                                        <label htmlFor="foto">Foto (1024px ancho / 768px alto / 72ppp)</label>
+                                                        <input id={`uploadFoto-${this.state.zona.id}`} name={`uploadFoto-${this.state.zona.id}`} type="file" className="d-none" accept="image/*" onChange={this.handleImgChange} />
+                                                        <img name={`foto-${this.state.zona.id}`} id={`foto-${this.state.zona.id}`} onClick={(e) => {document.getElementById("uploadFoto-" + this.state.zona.id).click()}} src={`${process.env.REACT_APP_API_HOST}/${process.env.REACT_APP_API_DIRECTORY_ZONA_FOTOS}/${this.state.zona.foto}`} className="img-fluid rounded" alt="Foto" />
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="col-md-4">
                                             <div className="form-group">
-                                                <label htmlFor="mapa">Mapa</label>
-                                                <input id={`uploadImage-${this.state.zona.id}`} name={`uploadImage-${this.state.zona.id}`} type="file" className="d-none" accept="image/*" onChange={this.handleImgChange} />
-                                                <img name={`mapa-${this.state.zona.id}`} id={`mapa-${this.state.zona.id}`} onClick={(e) => {document.getElementById("uploadImage-" + this.state.zona.id).click()}} src={`${process.env.REACT_APP_API_HOST}/${process.env.REACT_APP_API_DIRECTORY_MAPAS}/${this.state.zona.mapa}`} className="img-fluid rounded" alt="Mapa" />
+                                                <label htmlFor="mapa">Mapa (300px ancho / 400px alto / 72ppp)</label>
+                                                <input id={`uploadMapa-${this.state.zona.id}`} name={`uploadMapa-${this.state.zona.id}`} type="file" className="d-none" accept="image/*" onChange={this.handleImgChange} />
+                                                <img name={`mapa-${this.state.zona.id}`} id={`mapa-${this.state.zona.id}`} onClick={(e) => {document.getElementById("uploadMapa-" + this.state.zona.id).click()}} src={`${process.env.REACT_APP_API_HOST}/${process.env.REACT_APP_API_DIRECTORY_MAPAS}/${this.state.zona.mapa}`} className="img-fluid rounded" alt="Mapa" />
+                                            </div>
+                                            <div className="form-group">
+                                                <label htmlFor="mini">MiniMapa (150px ancho / 250px alto / 72ppp)</label>
+                                                <input id={`uploadMini-${this.state.zona.id}`} name={`uploadMini-${this.state.zona.id}`} type="file" className="d-none" accept="image/*" onChange={this.handleImgChange} />
+                                                <img name={`mini-${this.state.zona.id}`} id={`mini-${this.state.zona.id}`} onClick={(e) => {document.getElementById("uploadMini-" + this.state.zona.id).click()}} src={`${process.env.REACT_APP_API_HOST}/${process.env.REACT_APP_API_DIRECTORY_MAPAS}/mini/${this.state.zona.mini}`} className="img-fluid rounded" alt="SL" />
                                             </div>
                                         </div>
                                     </div>

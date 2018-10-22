@@ -13,7 +13,6 @@ class Galeria extends Component {
         this.handleImgChange = this.handleImgChange.bind(this);
     }
 
-    
     handleImgChange = (event) => {
         const data = new FormData();
         data.append("imgup", event.target.files[0]);
@@ -96,8 +95,8 @@ class Galeria extends Component {
         const loading = this.state.loading;
         const galeria = this.state.galeria.map((g) => {
             return(
-                <div className="col-sm-6 col-md-3" key={`g-${g.id}`}>
-                    <div className="card bg-dark text-white">
+                <div className="col-sm-6 col-md-4" key={`g-${g.id}`}>
+                    <div className="card bg-dark text-white mb-2">
                         <img className="card-img" src={`${process.env.REACT_APP_API_HOST}/atractivos/${g.imagen}`} alt="Img" />
                         <div className="card-img-overlay">
                             <div className="btn close bg-dark p-2 rounded" aria-label="Close" onClick={(e) => this.askDelete(g.id, g.imagen, e)}>
@@ -118,8 +117,8 @@ class Galeria extends Component {
                         <div className="row">
                             <div className="col-sm-12 col-md-12">
                                 <div className="d-flex justify-content-end mb-3">
-                                    <input id="uploadImage" name="uploadImage" type="file" className="d-none" accept="image/*" onChange={this.handleImgChange} />
-                                    <button className="btn btn-primary" onClick={(e) => {document.getElementById("uploadImage").click()}}><i className="fas fa-camera"></i></button>
+                                    <input id={`uploadImage-${this.state.idAtractivo}`} name={`uploadImage-${this.state.idAtractivo}`} type="file" className="d-none" accept="image/*" onChange={this.handleImgChange} />
+                                    <button className="btn btn-primary" onClick={(e) => {document.getElementById("uploadImage-" + this.state.idAtractivo).click()}}><i className="fas fa-camera"></i></button>
                                 </div>
                             </div>
                         </div>

@@ -12,6 +12,53 @@ class Atractivos extends Component {
             cantidad: 0
         }
         this.handleFClick = this.handleFClick.bind(this);
+        this.addAtractivo = this.addAtractivo.bind(this);
+    }
+
+    addAtractivo() {
+        if(parseInt(this.state.localidadSelect.id, 10) > 0) {
+            let data = {
+                idlocalidad: this.state.localidadSelect.id,
+                tipo: "No especificado",
+                nombre: "(Nuevo Atractivo Turístico [Editar])",
+                domicilio: "",
+                descripcion: "",
+                latitud: 0,
+                longitud: 0,
+                latitudg: "",
+                longitudg: "",
+                telefono: "",
+                mail: "",
+                web: "",
+                costo: 0,
+                lunes: "",
+                martes: "",
+                miercoles: "",
+                jueves: "",
+                viernes: "",
+                sabado: "",
+                domingo: "",
+                imperdible: 0
+            };
+            fetch(`${process.env.REACT_APP_API_HOST}/atractivo/new/${this.state.localidadSelect.id}`, {
+                method: 'POST',
+                headers: {
+                    "Authorization": "asdssffsdff",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            })
+            .then(res => res.json())
+            .then((result) => {
+                if(!result.err) {
+                    this.handleFClick(this.state.localidadSelect);
+                } else {
+                    console.log(result.errMsg);
+                }
+            }, (error) => { //???
+                console.log(error);
+            });
+        }
     }
 
     handleFClick(localidad) {
@@ -40,7 +87,6 @@ class Atractivos extends Component {
                 }, (error) => { //???
                     console.log(error);
                 });
-
             });
         } else {
             this.setState({
@@ -68,26 +114,28 @@ class Atractivos extends Component {
                         <React.Fragment>
                             <h4 className="bg-info text-white p-3 mb-3 rounded animated bounceInLeft delay-2s"><i className="fas fa-city"></i> Atractivos</h4>
                             <div className="row mb-5">
-                                <div className="col-sm-12 col-md-4">
+                                <div className="col-sm-12 col-md-12">
                                     <LocSelect handleFiltroClick={this.handleFClick} />
                                 </div>
-                                <div className="col-sm-12 col-md-8">
+                                <div className="col-sm-12 col-md-12">
                                     <div className="d-flex flex-row justify-content-between align-items-center mb-4" style={{width: "100%"}}>
                                         {
                                             (this.state.localidadSelect !== 0)
                                             ?
                                             <React.Fragment>
-                                                <div>{this.state.localidadSelect.departamento} <i className="fas fa-arrows-alt-h"></i> {this.state.localidadSelect.nombre}</div>
-                                                <button className="btn btn-dark">Nuevo Atractivo</button>
+                                                <div className="col-sm-12 col-md-12 bg-primary text-white p-2 mb-3 d-flex justify-content-between">
+                                                    <div style={{fontSize: "1.4rem"}}>{this.state.localidadSelect.departamento} <i className="fas fa-arrows-alt-h"></i> {this.state.localidadSelect.nombre}</div>
+                                                    <button className="btn btn-dark" onClick={this.addAtractivo}>Nuevo Atractivo</button>
+                                                </div>
                                             </React.Fragment>
                                             :
                                             ""
                                         }
                                     </div>
                                     <div className="mb-3">Atractivos Turísticos de la Localidad</div>
-                                    {
-                                        atractivos
-                                    }
+                                    <div className="accordion" id="accordionAtractivos">
+                                        { atractivos }
+                                    </div>
                                 </div>
                             </div>
                         </React.Fragment>

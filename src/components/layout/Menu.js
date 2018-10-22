@@ -37,6 +37,9 @@ const Menu = () => {
                 */}
             </ul>
             <style jsx="true">{`
+                .dropdown-toggle {
+                    cursor: pointer;
+                }
                 .h-menu {
                     list-style-type: none;
                 }

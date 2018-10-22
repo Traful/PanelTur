@@ -85,7 +85,7 @@ class Localidades extends Component {
                 this.setState({
                     newMode: false,
                     MsgVisible: true,
-                    MsgBody: "Los datos se actualizaron correctamente."
+                    MsgBody: "La Localidad se agregó correctamente."
                 }, () => {
                     this.componentDidMount();
                     //Esto posiblemente no funcione bien
@@ -217,10 +217,18 @@ class Localidades extends Component {
     }
 
     render() {
+        /*
         const filtro = this.state.localidades.data.map((lf) => {
             return (
                 // active
                 <button type="button" className={`list-group-item list-group-item-action${(lf.id === this.state.localidades.selected) ? " active" : ""}${lf.visible ? " d-block" : " d-none"}`} key={`lloc-${lf.id}`} onClick={(e) => this.handleFiltroClick(lf.id)}>{lf.nombre}</button>
+            );
+        });
+        */
+       const filtro = this.state.localidades.data.map((lf) => {
+            return (
+                // active
+                <span className={`spanloc ${(lf.id === this.state.localidades.selected) ? "active" : ""}${lf.visible ? " d-block" : " d-none"}`} key={`lloc-${lf.id}`} onClick={(e) => this.handleFiltroClick(lf.id)}>{lf.nombre}</span>
             );
         });
         const localidad_selected = this.state.localidades.selected;
@@ -235,24 +243,24 @@ class Localidades extends Component {
                                 {
                                     !this.state.newMode
                                     ?
-                                    <div className="col-sm-12 col-md-6">
-                                        <div className="row">
-                                            <div className="col-sm-10">
+                                    <div className="col-sm-12 col-md-12">
+                                        <div className="row justify-content-center">
+                                            <div className="col-sm-10 col-md-4">
                                                 <div className="form-group">
                                                     <label htmlFor="buscar">Buscar</label>
                                                     <input type="text" name="buscar" id="buscar" className="form-control" value={this.state.filtro} onChange={this.handleBusquedaChange} autoComplete="off" />
                                                 </div>
                                             </div>
-                                            <div className="col-sm-2">
-                                                <button className="btn btn-success btn-mt float-right" onClick={this.fireNew}><i className="fas fa-folder-plus"></i></button>
+                                            <div className="col-sm-2 col-md-2">
+                                                <button className="btn btn-success btn-mt" onClick={this.fireNew}><i className="fas fa-folder-plus"></i></button>
                                             </div>
                                         </div>
                                         <div className="row">
                                             <div className="col">
                                                 <div className="form-group">
-                                                    <ul className="list-group">
+                                                    <div className="d-flex justify-content-center flex-wrap">
                                                         {filtro}
-                                                    </ul>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -268,7 +276,7 @@ class Localidades extends Component {
                                         <FormLoc id={localidad_selected} error={this.handleFormError} ok={this.handleFormOk} cancel={this.handleFormCancel} />
                                     </React.Fragment>
                                     :
-                                    <React.Fragment></React.Fragment>
+                                    <React.Fragment>Esperando Elección</React.Fragment>
                                 }
                             </div>
                             <Msg visible={this.state.MsgVisible} okClose={() => this.setState({MsgVisible: false})}>
@@ -277,6 +285,18 @@ class Localidades extends Component {
                             <style jsx="true">{`
                                 .btn-mt {
                                     margin-top: 32px;
+                                }
+                                .spanloc {
+                                    padding: 4px 8px;
+                                    margin: 8px 8px;
+                                    background-color: #ccc;
+                                    -webkit-border-radius: 4px;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                }
+                                .spanloc.active {
+                                    background-color: #007bff;
+                                    color: #fff;
                                 }
                             `}</style>
                         </React.Fragment>

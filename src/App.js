@@ -14,24 +14,24 @@ import { Provider } from "./context";
 
 class App extends Component {
 	render() {
-	return (
-		<Provider>
-			<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}>
-				<React.Fragment>
-					<Navbar />
-					<Menu />
-					<div className="container">
-						<Switch>
-							<Route exact path="/" component={Zonas} />
-							<Route exact path="/localidades" component={Localidades} />
-							<Route exact path="/atractivos" component={Atractivos} />
-							<Route exact path="/fest" component={Fest} />
-						</Switch>
-					</div>
-				</React.Fragment>
-			</Router>
-		</Provider>
-	);
+		return (
+			<Provider>
+				<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}>
+					<React.Fragment>
+						<Navbar />
+						<Menu />
+						<div className="container">
+							<Switch>
+								<Route exact path="/" component={Zonas} />
+								<Route exact path="/localidades" component={Localidades} />
+								<Route exact path="/atractivos" component={Atractivos} />
+								<Route exact path="/fest" component={Fest} />
+							</Switch>
+						</div>
+					</React.Fragment>
+				</Router>
+			</Provider>
+		);
 	}
 }
 
