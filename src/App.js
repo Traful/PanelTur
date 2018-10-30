@@ -12,6 +12,10 @@ import Fest from "./components/paginas/Fest";
 import { Provider } from "./context";
 //<Router basename={`/${process.env.REACT_APP_BASENAME}`} history={Router.hashHistory}>
 
+const NoFound = () => {
+	return(<div>No Found</div>);
+}
+
 class App extends Component {
 	render() {
 		return (
@@ -23,9 +27,10 @@ class App extends Component {
 						<div className="container">
 							<Switch>
 								<Route exact path="/" component={Zonas} />
-								<Route exact path="/localidades" component={Localidades} />
-								<Route exact path="/atractivos" component={Atractivos} />
-								<Route exact path="/fest" component={Fest} />
+								<Route path="/localidades" component={Localidades} />
+								<Route path="/atractivos" component={Atractivos} />
+								<Route path="/fest" component={Fest} />
+								<Route component={NoFound} />
 							</Switch>
 						</div>
 					</React.Fragment>

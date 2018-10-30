@@ -1,21 +1,33 @@
 import React, { Component } from "react";
 
+/*
+    <Msg visible={true/false} okClose={funcion} okAceptar={funcion} tipo="0">
+        Asdad
+    </Msg>
+*/
 class Msg extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            visible: false
+            visible: false,
+            tipo: 0
         };
     }
 
     componentDidMount() {
-        this.setState({visible: this.props.visible});
+        this.setState({
+            visible: this.props.visible,
+            tipo: this.props.tipo
+        });
     }
 
     componentDidUpdate(prevProps) {
         // Typical usage (don't forget to compare props):
-        if(this.props.visible !== prevProps.visible) {
-            this.setState({visible: this.props.visible});
+        if(this.props.visible !== prevProps.visible || this.props.tipo !== prevProps.tipo) {
+            this.setState({
+                visible: this.props.visible,
+                tipo: this.props.tipo
+            });
         }
     }
 
@@ -34,7 +46,16 @@ class Msg extends Component {
                             <p>{this.props.children}</p>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.props.okClose}>Aceptar</button>
+                            {
+                                this.state.tipo === 0
+                                ?
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.props.okClose}>Aceptar</button>
+                                :
+                                <React.Fragment>
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.props.okAceptar}>Aceptar</button>
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={this.props.okClose}>Cancelar</button>
+                                </React.Fragment>
+                            }
                         </div>
                     </div>
                 </div>

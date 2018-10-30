@@ -48,7 +48,10 @@ class Zonas extends Component {
 
     componentDidMount() {
         fetch(`${process.env.REACT_APP_API_HOST}/zonas`, {
-            type: "GET"
+            type: "GET",
+            headers: {
+                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDAzMDE0MDQsImV4cCI6MTU0MDMzMDIwNCwianRpIjoiPz8_Iiwic3ViIjoiPz8_Iiwic2NvcGUiOnsiaWQiOiIxIiwicGVybWlzb3MiOnsiR0VUIjoiMSIsIlBPU1QiOiIxIiwiUFVUIjoiMSIsIlBBVENIIjoiMSIsIkRFTEVURSI6IjEifSwiaWR0aXBvIjoiMSJ9fQ.ZfaZxqBP46h7nw50rWTSM9vtCAPgxQUn_CBIDJ1zjXA",
+            }
         })
         .then(res => res.json())
         .then((result) => {

@@ -13,6 +13,11 @@ class Atractivos extends Component {
         }
         this.handleFClick = this.handleFClick.bind(this);
         this.addAtractivo = this.addAtractivo.bind(this);
+        this.fireUpdate = this.fireUpdate.bind(this);
+    }
+
+    fireUpdate() {
+        this.handleFClick(this.state.localidadSelect);
     }
 
     addAtractivo() {
@@ -100,7 +105,7 @@ class Atractivos extends Component {
         if(this.state.cantidad > 0) {
             atractivos = this.state.atractivos.map((atractivo) => {
                 return(
-                    <Atractivo key={`atractivo-${atractivo.id}`} idAtractivo={atractivo.id} />
+                    <Atractivo key={`atractivo-${atractivo.id}`} idAtractivo={atractivo.id} fireUpdateList={this.fireUpdate} />
                 );
             });
         } else {

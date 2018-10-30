@@ -34,14 +34,62 @@ class Atractivo extends Component {
                 domingo: "",
                 imperdible: false
             },
-            MsgVisible: false,
-            MsgBody: ""
+            Msg: {
+                MsgTipo: 0,
+                MsgVisible: false,
+                MsgBody: ""
+            },
+            idDelete: 0
         };
         this.handleChange = this.handleChange.bind(this);
         this.saveAtractivo = this.saveAtractivo.bind(this);
         this.fireMsg = this.fireMsg.bind(this);
         this.setLatLng = this.setLatLng.bind(this);
         this.setDays = this.setDays.bind(this);
+        this.msgDelAtractivo = this.msgDelAtractivo.bind(this);
+        this.delAtractivo = this.delAtractivo.bind(this);
+    }
+
+    msgDelAtractivo(id, nombre) {
+        this.setState({
+            Msg: {
+                MsgTipo: 1,
+                MsgVisible: true,
+                MsgBody: "Seguro de eliminar el Atractivo: " + nombre
+            },
+            idDelete: id
+        });
+    }
+
+    delAtractivo() {
+        alert(this.state.idDelete);
+        fetch(`${process.env.REACT_APP_API_HOST}/atractivo/${this.state.idDelete}`, {
+            method: 'DELETE',
+            headers: {
+                "Authorization": "asdssffsdff",
+                "Content-Type": "application/json"
+            }
+        })
+        .then(res => res.json())
+        .then((result) => {
+            if(!result.err) {
+                this.props.fireUpdateList();
+                /*
+                this.setState({
+                    Msg: {
+                        MsgTipo: 0,
+                        MsgVisible: false,
+                        MsgBody: ""
+                    },
+                    idDelete: 0
+                });
+                */
+            } else {
+                console.log(result.errMsg);
+            }
+        }, (error) => { //???
+            console.log(error);
+        });
     }
 
     setDays() {
@@ -69,16 +117,23 @@ class Atractivo extends Component {
         });
     }
 
-    fireMsg(msg) {
-        let msgshow = "";
-        if(Array.isArray(msg)) {
-            msgshow = msg.join(", ");
-        } else {
-            msgshow = msg;
-        }
+    fireMsg(msg, tipo = 0, id = 0) {
         this.setState({
-            MsgVisible: true,
-            MsgBody: msgshow
+            idDelete: id
+        }, () => {
+            let msgshow = "";
+            if(Array.isArray(msg)) {
+                msgshow = msg.join(", ");
+            } else {
+                msgshow = msg;
+            }
+            this.setState({
+                Msg: {
+                    MsgTipo: tipo,
+                    MsgVisible: true,
+                    MsgBody: msgshow
+                }
+            });
         });
     }
 
@@ -93,15 +148,18 @@ class Atractivo extends Component {
         })
         .then(res => res.json())
         .then((result) => {
+            console.log(result);
             if(!result.err) {
-                this.fireMsg("Los datos se guardaron correctamente.");
+                this.fireMsg("Los datos se guardaron correctamente.", 0, 0);
             } else {
-                this.fireMsg(result.errMsg);
-                console.log(result.errMsg);
+                if(result.errMsgs.length) {
+                    this.fireMsg(result.errMsgs, 0, 0);
+                } else {
+                    this.fireMsg(result.errMsg, 0, 0);
+                }
             }
         }, (error) => { //???
             this.fireMsg(error);
-            console.log(error);
         });
     }
 
@@ -154,9 +212,12 @@ class Atractivo extends Component {
             <React.Fragment>
                 <div className="card">
                     <div className="card-header" id={`atractivo-${this.state.atractivo.id}`}>
-                        <h5 className="mb-0">
-                            <button className="btn btn-link" type="button" data-toggle="collapse" data-target={`#collapse-activo-${this.state.atractivo.id}`} aria-expanded="true" aria-controls={`collapse-activo-${this.state.atractivo.id}`} onClick={(e) => { window.scrollTo(0, 700); }}>
+                        <h5 className="mb-0 d-flex justify-content-between">
+                            <button className="btn" type="button" data-toggle="collapse" data-target={`#collapse-activo-${this.state.atractivo.id}`} aria-expanded="true" aria-controls={`collapse-activo-${this.state.atractivo.id}`} onClick={(e) => { window.scrollTo(0, 700); }}>
                                 {this.state.atractivo.nombre}
+                            </button>
+                            <button className="btn btn-danger" type="button" onClick={(e) => { this.msgDelAtractivo(this.state.atractivo.id, this.state.atractivo.nombre, e) }}>
+                                <i className="fas fa-trash"></i>
                             </button>
                         </h5>
                     </div>
@@ -307,14 +368,12 @@ class Atractivo extends Component {
                                     <Galeria idAtractivo={this.state.atractivo.id} />
                                 </div>
                             </div>
-                            <Msg visible={this.state.MsgVisible} okClose={() => this.setState({MsgVisible: false})}>
-                                {this.state.MsgBody}
-                            </Msg>
                         </div>
                     </div>
                 </div>
-
-                
+                <Msg visible={this.state.Msg.MsgVisible} okClose={() => this.setState({Msg: { ...this.state.Msg, MsgVisible: false}})} okAceptar={this.delAtractivo} tipo={this.state.Msg.MsgTipo}>
+                    {this.state.Msg.MsgBody}
+                </Msg>
                 <style jsx="true">{`
                     
                 `}</style>
@@ -336,5 +395,11 @@ class Atractivo extends Component {
                     </div>
                 </div>
                 */
+
+/*
+<Msg visible={this.state.MsgVisible} okClose={() => this.setState({MsgVisible: false})}>
+    {this.state.MsgBody}
+</Msg>
+*/
 
 export default Atractivo;

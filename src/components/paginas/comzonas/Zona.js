@@ -349,7 +349,7 @@ class Zona extends Component {
                     :
                     <h1>Cargando...</h1>
                 }
-                <Msg visible={this.state.MsgVisible} okClose={() => this.setState({MsgVisible: false})}>
+                <Msg visible={this.state.MsgVisible} okClose={() => this.setState({MsgVisible: false})} tipo="0">
                     Los dato se actualizaron correctamente.
                 </Msg>
                 <style jsx="true">{`
