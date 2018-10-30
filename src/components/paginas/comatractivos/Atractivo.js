@@ -62,7 +62,6 @@ class Atractivo extends Component {
     }
 
     delAtractivo() {
-        alert(this.state.idDelete);
         fetch(`${process.env.REACT_APP_API_HOST}/atractivo/${this.state.idDelete}`, {
             method: 'DELETE',
             headers: {
