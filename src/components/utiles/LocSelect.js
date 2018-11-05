@@ -53,16 +53,18 @@ class LocSelect extends Component {
     }
 
     handleFiltroClick(selected) {
-        this.setState({
+       this.setState({
             localidades: {
                 ...this.state.localidades,
                 selected: selected
             }
         }, () => {
             this.props.handleFiltroClick(selected);
+            /*
             if(window.scrollY > 350) {
                 window.scrollTo(0, 140);
             }
+            */
         });
     }
 

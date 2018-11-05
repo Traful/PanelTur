@@ -7,12 +7,19 @@ const Menu = () => {
             <ul className="d-flex flex-direction-row justify-content-center h-menu">
                 <li><Link to="/">Zonas</Link></li>
                 <li className="nav-item dropdown">
-                    <a className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Localidades</a>
+                    <button className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Localidades</button>
                     <div className="dropdown-menu">
                         <Link className="dropdown-item" to="/localidades">Registros</Link>
                         <div className="dropdown-divider"></div>
                         <Link className="dropdown-item" to="/atractivos">Atractivos</Link>
                         <Link className="dropdown-item" to="/fest">Fiestas/Eventos</Link>
+                    </div>
+                </li>
+                <li><Link to="/novedades">Novedades</Link></li>
+                <li className="nav-item dropdown">
+                    <button className="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Extras</button>
+                    <div className="dropdown-menu">
+                        <Link className="dropdown-item" to="/oficinas">Oficinas de Turísmo</Link>
                     </div>
                 </li>
                 {/*
@@ -71,6 +78,22 @@ const Menu = () => {
                 }
 
                 .h-menu > li > a {
+                    display: block;
+                    line-height: 50px;
+                    text-align: center;
+                    text-decoration: none;
+                    color: #343a40;
+                    font-size: 1.2rem;
+                }
+
+                .h-menu > li > button {
+                    background: none;
+                    color: inherit;
+                    border: none;
+                    padding: 0;
+                    font: inherit;
+                    cursor: pointer;
+                    outline: inherit;
                     display: block;
                     line-height: 50px;
                     text-align: center;

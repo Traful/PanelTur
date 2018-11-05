@@ -37,12 +37,6 @@ class FormLoc extends Component {
                 mweb: "",
                 mmail: "",
                 mresponsable: "",
-                odireccion: "",
-                otelefono: "",
-                ointerno: "",
-                oweb: "",
-                omail: "",
-                oresponsable: "",
                 fiestas: "",
                 departamento: "",
                 color: ""
@@ -286,59 +280,6 @@ class FormLoc extends Component {
                     <div className="col-sm-12 col-md-6">
                         <div className="row mb-3">
                             <div className="col">
-                                <span className="bg-dark text-white p-2 rounded d-block">Datos del a Oficina Turística</span>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="odireccion">Dirección</label>
-                                    <input type="text" name="odireccion" id="odireccion" className="form-control" value={this.state.registro.odireccion} onChange={(e) => this.setState({registro: {...this.state.registro, odireccion: e.target.value}})} autoComplete="off" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="otelefono">Teléfono</label>
-                                    <input type="text" name="otelefono" id="otelefono" className="form-control" value={this.state.registro.otelefono} onChange={(e) => this.setState({registro: {...this.state.registro, otelefono: e.target.value}})} autoComplete="off" />
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="ointerno">Interno</label>
-                                    <input type="text" name="ointerno" id="ointerno" className="form-control" value={this.state.registro.ointerno} onChange={(e) => this.setState({registro: {...this.state.registro, ointerno: e.target.value}})} autoComplete="off" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="omail">Email</label>
-                                    <input type="text" name="omail" id="omail" className="form-control" value={this.state.registro.omail} onChange={(e) => this.setState({registro: {...this.state.registro, omail: e.target.value}})} autoComplete="off" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="oweb">Web</label>
-                                    <input type="text" name="oweb" id="oweb" className="form-control" value={this.state.registro.oweb} onChange={(e) => this.setState({registro: {...this.state.registro, oweb: e.target.value}})} autoComplete="off" />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="col">
-                                <div className="form-group">
-                                    <label htmlFor="oresponsable">Responsable</label>
-                                    <input type="text" name="oresponsable" id="oresponsable" className="form-control" value={this.state.registro.oresponsable} onChange={(e) => this.setState({registro: {...this.state.registro, oresponsable: e.target.value}})} autoComplete="off" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-12 col-md-6">
-                        <div className="row mb-3">
-                            <div className="col">
                                 <span className="bg-dark text-white p-2 rounded d-block">Datos del Municipio</span>
                             </div>
                         </div>
@@ -389,12 +330,12 @@ class FormLoc extends Component {
                             </div>
                         </div>
                     </div>
-                    <div className="col-sm-12 col-md-12">
+                    <div className="col-sm-12 col-md-6">
                         <div className="row">
                             <div className="col">
                                 <div className="form-group">
                                     <label htmlFor="fiestas">Festejos</label>
-                                    <textarea rows="5" name="fiestas" id="fiestas" className="form-control" value={this.state.registro.fiestas} onChange={(e) => this.setState({registro: {...this.state.registro, fiestas: e.target.value}})} autoComplete="off" placeholder="Festejos/Eventos que generalmente se dan en la localidad cada año (solo para tener en cuenta)" />
+                                    <textarea rows="15" name="fiestas" id="fiestas" className="form-control" value={this.state.registro.fiestas} onChange={(e) => this.setState({registro: {...this.state.registro, fiestas: e.target.value}})} autoComplete="off" placeholder="Festejos/Eventos que generalmente se dan en la localidad cada año (solo para tener en cuenta)" />
                                 </div>
                             </div>
                         </div>

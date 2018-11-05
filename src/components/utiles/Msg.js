@@ -17,7 +17,7 @@ class Msg extends Component {
     componentDidMount() {
         this.setState({
             visible: this.props.visible,
-            tipo: this.props.tipo
+            tipo: parseInt(this.props.tipo, 10)
         });
     }
 
@@ -26,7 +26,7 @@ class Msg extends Component {
         if(this.props.visible !== prevProps.visible || this.props.tipo !== prevProps.tipo) {
             this.setState({
                 visible: this.props.visible,
-                tipo: this.props.tipo
+                tipo: parseInt(this.props.tipo, 10)
             });
         }
     }
