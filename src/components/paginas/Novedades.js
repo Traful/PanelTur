@@ -3,11 +3,40 @@ import Msg from "../utiles/Msg";
 
 
 const Novedad = (props) => {
+    let descripcion = props.data.descripcion.substr(0, 250) + "...";
+    let fecha = props.data.fecha.split("-");
     return(
-        <div className="Novedad">
-            <h1>{props.data.titulo}</h1>
-            <h4>{props.data.subtitulo}</h4>
-            <p>{props.data.fecha}</p>
+        <div className="row border p-2 mb-3">
+            <div className="col-sm-12 col-md-4">
+                <img className="img-fluid" style={{maxHeight: "300px"}} src={`${process.env.REACT_APP_API_HOST}/${process.env.REACT_APP_API_DIRECTORY_NOVEDADES_FOTOS}/${props.data.foto_uno}`} alt="Foto" />
+            </div>
+            <div className="col">
+                <div className="row">
+                    <div className="col-9">
+                        <h1 className="text-uppercase">{props.data.titulo}</h1>
+                    </div>
+                    <div className="col-3 text-center pt-3">
+                        {`${fecha[2]}/${fecha[1]}/${fecha[0]}`}
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <h4 className="text-uppercase">{props.data.subtitulo}</h4>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <p>{descripcion}</p>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                        <div className="d-flex  justify-content-end">
+                            <button className="btn btn-danger" onClick={(e) => props.eliminar(props.data.id)}><i className="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
@@ -40,6 +69,11 @@ class Novedades extends Component {
         this.resetForm = this.resetForm.bind(this);
         this.handleImgChange = this.handleImgChange.bind(this);
         this.handleFromNovSubmit = this.handleFromNovSubmit.bind(this);
+        this.eliminarNovedad = this.eliminarNovedad.bind(this);
+    }
+
+    eliminarNovedad(id) {
+        console.log(id);
     }
 
     handleFromNovSubmit(event) {
@@ -79,7 +113,7 @@ class Novedades extends Component {
                     }
                 }, () => {
                     this.resetForm();
-                    //Refrescar la Lista
+                    this.getData();
                 });
             } else {
                 this.setState({
@@ -137,7 +171,7 @@ class Novedades extends Component {
     }
 
     getData() {
-        fetch(`${process.env.REACT_APP_API_HOST}/novedades/10`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/novedades/12`, {
             method: "GET",
             headers: {
                 "Authorization": "",
@@ -170,9 +204,8 @@ class Novedades extends Component {
     }
 
     render() {
-        console.log(this.state.novedades);
         const lista_novedades = this.state.novedades.map((novedad) => {
-            return <Novedad key={`novedad-${novedad.id}`} data={novedad} />
+            return <Novedad key={`novedad-${novedad.id}`} data={novedad} eliminar={this.eliminarNovedad} />
         });
         return (
             <div className="Novedades">
@@ -189,19 +222,19 @@ class Novedades extends Component {
                                         <div className="col-md-12">
                                             <div className="form-group">
                                                 <label htmlFor="localidad">Localidad</label>
-                                                <input type="text" name="localidad" id="localidad" className="form-control" value={this.state.novedad.localidad} onChange={this.handleInputChange} />
+                                                <input type="text" name="localidad" id="localidad" className="form-control" value={this.state.novedad.localidad} onChange={this.handleInputChange} maxLength="50" />
                                             </div>
                                         </div>
                                         <div className="col-md-12">
                                             <div className="form-group">
                                                 <label htmlFor="titulo">Título</label>
-                                                <input type="text" name="titulo" id="titulo" className="form-control" value={this.state.novedad.titulo} onChange={this.handleInputChange} />
+                                                <input type="text" name="titulo" id="titulo" className="form-control" value={this.state.novedad.titulo} onChange={this.handleInputChange} maxLength="50" />
                                             </div>
                                         </div>
                                         <div className="col-md-12">
                                             <div className="form-group">
                                                 <label htmlFor="subtitulo">Sub Título</label>
-                                                <input type="text" name="subtitulo" id="subtitulo" className="form-control" value={this.state.novedad.subtitulo} onChange={this.handleInputChange} />
+                                                <input type="text" name="subtitulo" id="subtitulo" className="form-control" value={this.state.novedad.subtitulo} onChange={this.handleInputChange} maxLength="75" />
                                             </div>
                                         </div>
 
@@ -278,7 +311,8 @@ class Novedades extends Component {
                         <h5 className="bg-dark text-white p-3 mb-3 rounded">Lista de Novedades</h5>
                         <div className="row">
                             <div className="col">
-                                <h1>Novedades</h1>
+                                <span>Últimas 12 Novedades</span>
+                                <hr/>
                                 {lista_novedades}
                             </div>
                         </div>
@@ -295,8 +329,6 @@ class Novedades extends Component {
                     }
                     .noveades-span-row-2 {
                         grid-row: span 2 / auto;
-                    }
-                    .img-novedad {
                     }
                 `}</style>
             </div>
