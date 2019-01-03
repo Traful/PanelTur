@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 //import Heditor from "../../utiles/Heditor";
+import { Consumer } from "../../../context";
 import Msg from "../../utiles/Msg";
 
 class Zona extends Component {
@@ -60,11 +61,12 @@ class Zona extends Component {
         var mini = document.getElementById("uploadMini-" + this.state.zona.id).files[0];
 		if(mini) {
 			data.append("imgmini", mini, mini.name);
-		}
+        }
+        var token = this.context.token;
         fetch(`${process.env.REACT_APP_API_HOST}/zona/${this.state.id}`, {
             method: "POST",
             headers: {
-                "Authorization": "asdssffsdff",
+                "Authorization": token,
                 //"Content-Type": "multipart/form-data"
             },
             body: data
@@ -102,10 +104,11 @@ class Zona extends Component {
     }
 
     handleDeleteCity = (id) => {
+        var token = this.context.token;
         fetch(`${process.env.REACT_APP_API_HOST}/zona/delete/ciudad/${id}`, {
             method: "DELETE",
             headers: {
-                "Authorization": "asdssffsdff",
+                "Authorization": token,
                 "Content-Type": "application/json"
             }
         })
@@ -121,10 +124,11 @@ class Zona extends Component {
     }
 
     handleAddCiudad = (event) => {
+        var token = this.context.token;
         fetch(`${process.env.REACT_APP_API_HOST}/zona/${this.state.zona.id}/add/ciudad`, {
             method: "POST",
             headers: {
-                "Authorization": "asdssffsdff",
+                "Authorization": token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({idciudad: this.state.combo_ciudades.selected})
@@ -159,8 +163,13 @@ class Zona extends Component {
     }
 
     findZonaCiudades = (idzona) => {
+        const token = this.context.token;
         fetch(`${process.env.REACT_APP_API_HOST}/zona/${idzona}/ciudades`, {
-            type: "GET"
+            method: "GET",
+            headers: new Headers({
+                "Authorization": token,
+                "Content-Type": "application/json"
+            })
         })
         .then(res => res.json())
         .then((result) => {
@@ -179,8 +188,14 @@ class Zona extends Component {
         this.setState({
             isLoaded: false,
         }, () => {
+            const token = this.context.token;
+            console.log("Token: " + token);
             fetch(`${process.env.REACT_APP_API_HOST}/ciudades`, {
-                type: "GET"
+                method: "GET",
+                headers: new Headers({
+                    "Authorization": token,
+                    "Content-Type": "application/json"
+                })
             })
             .then(res => res.json())
             .then((result) => {
@@ -196,9 +211,12 @@ class Zona extends Component {
                     error
                 });
             });
-
             fetch(`${process.env.REACT_APP_API_HOST}/zona/${this.state.id}`, {
-                type: "GET"
+                method: "GET",
+                headers: new Headers({
+                    "Authorization": token,
+                    "Content-Type": "application/json"
+                })
             })
             .then(res => res.json())
             .then((result) => {
@@ -365,5 +383,7 @@ class Zona extends Component {
         );
     }
 }
+
+Zona.contextType = Consumer;
 
 export default Zona;

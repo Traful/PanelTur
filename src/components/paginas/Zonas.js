@@ -17,17 +17,17 @@ class Zonas extends Component {
     }
 
     handleAddZona = () => {
+        var token = this.context.token;
         fetch(`${process.env.REACT_APP_API_HOST}/zona`, {
             method: 'POST',
             headers: {
-                "Authorization": "asdssffsdff",
+                "Authorization": token,
                 "Content-Type": "application/json"
             },
             body: JSON.stringify({nombre: this.state.nombre})
         })
         .then(res => res.json())
         .then((result) => {
-            console.log(result);
             if(!result.err) {
                 this.setState({nombre: ""});
                 this.componentDidMount();
@@ -47,11 +47,13 @@ class Zonas extends Component {
     }
 
     componentDidMount() {
+        var token = this.context.token;
         fetch(`${process.env.REACT_APP_API_HOST}/zonas`, {
-            type: "GET",
-            headers: {
-                "Authorization": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NDAzMDE0MDQsImV4cCI6MTU0MDMzMDIwNCwianRpIjoiPz8_Iiwic3ViIjoiPz8_Iiwic2NvcGUiOnsiaWQiOiIxIiwicGVybWlzb3MiOnsiR0VUIjoiMSIsIlBPU1QiOiIxIiwiUFVUIjoiMSIsIlBBVENIIjoiMSIsIkRFTEVURSI6IjEifSwiaWR0aXBvIjoiMSJ9fQ.ZfaZxqBP46h7nw50rWTSM9vtCAPgxQUn_CBIDJ1zjXA",
-            }
+            method: "GET",
+            headers: new Headers({
+                "Authorization": token,
+                "Content-Type": "application/json"
+            })
         })
         .then(res => res.json())
         .then((result) => {
@@ -117,5 +119,7 @@ class Zonas extends Component {
         );
     }
 }
+
+Zonas.contextType = Consumer;
 
 export default Zonas;

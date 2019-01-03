@@ -5,12 +5,13 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import "./App.css";
 import Navbar from "./components/layout/Navbar";
 import Menu from "./components/layout/Menu";
+import ToTop from "./components/utiles/ToTop";
 import Zonas from "./components/paginas/Zonas";
 import Localidades from "./components/paginas/Localidades";
 import Atractivos from "./components/paginas/Atractivos";
 import Oficinas from "./components/paginas/Oficinas";
 import Novedades from "./components/paginas/Novedades";
-import Fest from "./components/paginas/Fest";
+import Eventos from "./components/paginas/Eventos";
 import Login from "./components/paginas/Login";
 
 
@@ -28,7 +29,7 @@ class App extends Component {
         super(props);
         this.state = {
 			loading: true,
-			authorized: true //false
+			authorized: false
 		};
 		this.okLogin = this.okLogin.bind(this);
 	}
@@ -50,16 +51,21 @@ class App extends Component {
 							<Navbar />
 							<Menu />
 							<div className="container">
-								<Switch>
-									<Route exact path="/" component={Zonas} />
-									<Route path="/localidades" component={Localidades} />
-									<Route path="/atractivos" component={Atractivos} />
-									<Route path="/oficinas" component={Oficinas} />
-									<Route path="/novedades" component={Novedades} />
-									<Route path="/fest" component={Fest} />
-									<Route component={NoFound} />
-								</Switch>
+								<div className="row">
+									<div className="col">
+										<Switch>
+											<Route exact path="/" component={Zonas} />
+											<Route path="/localidades" component={Localidades} />
+											<Route path="/atractivos" component={Atractivos} />
+											<Route path="/oficinas" component={Oficinas} />
+											<Route path="/novedades" component={Novedades} />
+											<Route path="/eventos" component={Eventos} />
+											<Route component={NoFound} />
+										</Switch>
+									</div>
+								</div>
 							</div>
+							<ToTop showAt={400} />
 						</React.Fragment>
 					</Router>
 					:

@@ -209,7 +209,6 @@ class FormOfi extends Component {
                                 registro: result.data.registros[0]
                             });
                         } else {
-                            console.log(idlocalidad);
                             this.resetData(idlocalidad);
                         }
                     } else {

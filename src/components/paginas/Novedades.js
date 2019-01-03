@@ -1,45 +1,6 @@
 import React, { Component } from "react";
+import FromNov from "./comnovedades/FormNov";
 import Msg from "../utiles/Msg";
-
-
-const Novedad = (props) => {
-    let descripcion = props.data.descripcion.substr(0, 250) + "...";
-    let fecha = props.data.fecha.split("-");
-    return(
-        <div className="row border p-2 mb-3">
-            <div className="col-sm-12 col-md-4">
-                <img className="img-fluid" style={{maxHeight: "300px"}} src={`${process.env.REACT_APP_API_HOST}/${process.env.REACT_APP_API_DIRECTORY_NOVEDADES_FOTOS}/${props.data.foto_uno}`} alt="Foto" />
-            </div>
-            <div className="col">
-                <div className="row">
-                    <div className="col-9">
-                        <h1 className="text-uppercase">{props.data.titulo}</h1>
-                    </div>
-                    <div className="col-3 text-center pt-3">
-                        {`${fecha[2]}/${fecha[1]}/${fecha[0]}`}
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <h4 className="text-uppercase">{props.data.subtitulo}</h4>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <p>{descripcion}</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <div className="col">
-                        <div className="d-flex  justify-content-end">
-                            <button className="btn btn-danger" onClick={(e) => props.eliminar(props.data.id)}><i className="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
 
 class Novedades extends Component {
     constructor(props) {
@@ -73,7 +34,38 @@ class Novedades extends Component {
     }
 
     eliminarNovedad(id) {
-        console.log(id);
+        this.setState({
+            loading: true
+        }, () => {
+            fetch(`${process.env.REACT_APP_API_HOST}/novedad/${id}`, {
+                method: "DELETE",
+                headers: {
+                    "Authorization": "",
+                }
+            })
+            .then(res => res.json())
+            .then((result) => {
+                if(!result.err) {
+                    this.setState({
+                        msg: {
+                            visible: true,
+                            body: "Los datos se eliminaron correctamente."
+                        }
+                    }, () => {
+                        this.getData();
+                    });
+                } else {
+                    this.setState({
+                        msg: {
+                            visible: true,
+                            body: result.errMsgs
+                        }
+                    });
+                }
+            }, (error) => { //???
+                console.log(error);
+            });
+        });
     }
 
     handleFromNovSubmit(event) {
@@ -205,7 +197,7 @@ class Novedades extends Component {
 
     render() {
         const lista_novedades = this.state.novedades.map((novedad) => {
-            return <Novedad key={`novedad-${novedad.id}`} data={novedad} eliminar={this.eliminarNovedad} />
+            return <FromNov key={`novedad-${novedad.id}`} id={novedad.id} eliminar={this.eliminarNovedad} />
         });
         return (
             <div className="Novedades">
